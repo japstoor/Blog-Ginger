@@ -1,0 +1,22 @@
+.navtop {
+    margin-top: 100px;
+}
+.username1 {
+    width: 20% !important;
+    text-align: center;
+    margin-left: 39%;
+    margin-top: 20px;
+}
+.button1 {
+    margin-top: 10px;
+}
+ .btn {
+    width: 20%;
+    display: block;  
+    margin-top: 5px;
+    margin-left: 39%;
+    padding: auto;
+}
+.space {
+    margin-bottom: 100px;
+}
