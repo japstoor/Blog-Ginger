@@ -24,18 +24,20 @@ export class ServiceService {
 
 userida: number;
 
-  private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
-
-  login(loginData): Observable<ApiResponse> {
+private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
+private imageStatus = new BehaviorSubject<boolean>(this.checkImageStatus());
+ImageStatus$: Observable<boolean>;
+login(loginData): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(`${this.baseUrl3}/`, loginData).pipe(
-
+      
       map(result => {
-
+        
         // login successful if there's a jwt token in the response
         if (result && result.token)
         {
-              // store user details and jwt token in local storage to keep user logged in between page refreshes
-
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+            this.getUserProfile();
+            this.checkImageStatus();
             this.loginStatus.next(true);
             localStorage.setItem('loginStatus', '1');
             localStorage.setItem('token', result.token);
@@ -53,8 +55,11 @@ userida: number;
     {
         // Set Loginstatus to false and delete saved jwt cookie
         this.loginStatus.next(false);
+        this.imageStatus.next(false);
         localStorage.removeItem('token');
+        localStorage.removeItem('image');
         localStorage.setItem('loginStatus', '0');
+        localStorage.setItem('imageStatus', '0');
         this.router.navigate(['/login']);
         console.log('Logged Out Successfully');
 
@@ -79,9 +84,25 @@ userida: number;
       const httpOptions = {  headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
       return this.http.post<ApiResponse>(`${this.baseUrl}/`, id, httpOptions);
     }
-    getUserProfile(): Observable<ApiResponse[]> {
+    getUserProfile(): Observable<ApiResponse> {
       const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-      return this.http.get<ApiResponse[]>(`${this.baseUrl2}/`, httpOptions );
+      return this.http.get<ApiResponse>(`${this.baseUrl2}/`, httpOptions ).pipe(
+
+        map(user => {
+
+          if (user.image != null)
+          {
+                this.imageStatus.next(true);
+                localStorage.setItem('imageStatus', '1');
+                localStorage.setItem('image', user.image);
+
+          }
+
+          return user;
+
+
+        })
+        );
     }
 
     getUserById(id: number): Observable<ApiResponse[]> {
@@ -125,6 +146,24 @@ userida: number;
        get isLoggesIn()
        {
            return this.loginStatus.asObservable();
+       }
+    checkImageStatus(): boolean
+  {
+
+      // tslint:disable-next-line: prefer-const
+      var imageCookie = localStorage.getItem('imageStatus');
+      if (imageCookie == '1')
+        {
+
+            return true;
+
+        }
+      return false;
+       }
+
+       get isImageIn()
+       {
+           return this.imageStatus.asObservable();
        }
 
 }

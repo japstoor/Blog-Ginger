@@ -15,13 +15,19 @@ export class HomeComponent implements OnInit {
                private routes : ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.apiService.getUserProfile().subscribe( (data: any) => {
+      if(data.image != null)
+      {
+        localStorage.setItem('imageStatus', '1');
+      };
+      });
     this.apiService.getBlog()
     .subscribe( (data: any) => {
+          
         this.users = data;
       //  console.log(this.users);
     });
 
-    
   }
   getBlogById(user: User): void {
     this.router.navigate(['blog/' + user.id]);

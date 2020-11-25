@@ -4,5 +4,6 @@ export class ApiResponse {
     message: any;
     token: any;
     title: any;
-
+    imageSrc: any;
+    image: any;
 }

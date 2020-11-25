@@ -25,5 +25,13 @@
     height:200px;
     font-size:14pt;
 }
-
+@media  (max-width: 576px) { 
+  
+   .blog {
+    width: 50%;
+    margin-left: 100px;
+    border: none;
+    
+}
+}
   

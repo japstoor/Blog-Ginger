@@ -3,7 +3,7 @@
     <a href="blog" class="my-0 mr-md-auto font-weight-normal logo"><img [src]="Logo" alt=""></a>
     <nav class="my-2 my-md-0 mr-md-3">
       <div class="dropdown" *ngIf="(LoginStatus$ | async) as LoginStatus">
-        <button class="dropbtn"><img class="navimg rounded-circle" [src]="imageUrl"  alt="" *ngIf="!(Img$)"><img class="navimg rounded-circle" src="{{user.imageSrc}}"  alt="" *ngIf="(Img$)"></button>
+        <button class="dropbtn"><img class="navimg rounded-circle" [src]="imageUrl"  alt="" *ngIf="!(ImageStatus$ | async) as imageStatus"><img class="navimg rounded-circle" src="{{user.imageSrc}}"  alt="" *ngIf="(ImageStatus$ | async) as imageStatus"></button>
         <div class="dropdown-content">
           <a href="newpost">New story</a>
           <a href="stories">Stories</a>
